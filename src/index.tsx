@@ -1,8 +1,9 @@
 /* @refresh reload */
 import { render } from 'solid-js/web'
 
-import './index.css'
 import App from './App'
+import './index.css'
+import { parse } from './parse'
 
 const root = document.getElementById('root')
 
@@ -13,3 +14,5 @@ if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
 }
 
 render(() => <App />, root!)
+
+parse()
