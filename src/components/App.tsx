@@ -1,13 +1,22 @@
-import type { Component } from 'solid-js'
+import { createSignal, type Component } from 'solid-js'
 
-import logo from './logo.svg'
 import styles from './App.module.css'
+import DropZone from './DropZone'
+import { FrameRenderer } from './FrameRenderer'
 
 const App: Component = () => {
+  const [file, setFile] = createSignal<File>()
+
   return (
     <div class={styles.App}>
+      <DropZone
+        fileHandler={(f) => {
+          console.log(f)
+          setFile(f)
+        }}
+      />
+      <FrameRenderer file={file()} />
       <header class={styles.header}>
-        <img src={logo} class={styles.logo} alt="logo" />
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
         </p>
