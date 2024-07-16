@@ -1,7 +1,9 @@
 .FramesContainer {
   text-align: center;
+  width: 90%;
 }
 
 .Frame {
   width: 200px;
+  vertical-align: text-bottom;
 }

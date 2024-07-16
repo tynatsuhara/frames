@@ -46,7 +46,11 @@ export const getFrames = (file: File, timestamps: number[]): Promise<string[]> =
         }
 
         const ts = timestamps[frames.length]
-        player.currentTime = ts // for some reason, this errors on the last frame, but also seems to work fine
+        try {
+          player.currentTime = ts
+        } catch (e) {
+          // for some reason, this errors on the last frame, but also seems to work fine
+        }
       })
     }
 
