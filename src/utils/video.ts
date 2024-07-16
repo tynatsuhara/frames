@@ -13,46 +13,43 @@ export const getDurationSeconds = (file: File): Promise<number> => {
   })
 }
 
-export const getFrame = (file: File, timestamp = 0): Promise<Blob> => {
-  return new Promise((resolve, reject) => {
+export const getFrames = (file: File, timestamps: number[]): Promise<string[]> => {
+  return new Promise((resolve) => {
+    const startTime = new Date().getTime()
+
     const player = document.createElement('video')
     player.setAttribute('src', URL.createObjectURL(file))
     player.load()
-    player.onerror = () => {
-      reject('error loading video file')
-    }
+    player.onerror = () => alert('failed to process video')
 
+    const frames: string[] = [] // an array of data urls
+
+    const canvas = document.createElement('canvas')
+    const ctx = canvas.getContext('2d')!
     player.onloadedmetadata = () => {
-      // seek to user defined timestamp (in seconds) if possible
-      if (player.duration < timestamp) {
-        reject('error loading video')
-        return
-      }
-
-      // extract video thumbnail once seeking is complete
-      player.onseeked = () => {
-        console.log('video is now paused at %ss.', timestamp)
-        // define a canvas to have the same dimension as the video
-        const canvas = document.createElement('canvas')
-        canvas.width = player.videoWidth
-        canvas.height = player.videoHeight
-        // draw the video frame to canvas
-        const ctx = canvas.getContext('2d')!
-        ctx.drawImage(player, 0, 0, canvas.width, canvas.height)
-        // return the canvas image as a blob
-        ctx.canvas.toBlob(
-          (blob) => {
-            resolve(blob!)
-          },
-          'image/jpeg',
-          1 /* quality */
-        )
-      }
-
-      // delay seeking or else 'seeked' event won't fire on Safari
-      setTimeout(() => {
-        player.currentTime = timestamp
-      }, 200)
+      canvas.width = player.videoWidth
+      canvas.height = player.videoHeight
     }
+
+    const queueNextFrame = () => {
+      if (frames.length === timestamps.length) {
+        const timeTaken = new Date().getTime() - startTime
+        console.log(`rendered frames after ${timeTaken} milliseconds`)
+        resolve(frames)
+      }
+
+      setTimeout(() => {
+        player.onseeked = () => {
+          ctx.drawImage(player, 0, 0, canvas.width, canvas.height)
+          frames.push(ctx.canvas.toDataURL())
+          queueNextFrame()
+        }
+
+        const ts = timestamps[frames.length]
+        player.currentTime = ts
+      })
+    }
+
+    queueNextFrame()
   })
 }
