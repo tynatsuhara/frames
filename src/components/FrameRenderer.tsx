@@ -1,7 +1,8 @@
 import { Component, Show, createEffect, createSignal } from 'solid-js'
 import { getDurationSeconds, getFrames } from '../utils/video'
+import styles from './FrameRenderer.module.css'
 
-const FRAMES = 100
+const FRAMES = 25
 const TRIM_START_SECONDS = 5
 const TRIM_END_SECONDS = 5
 
@@ -31,9 +32,11 @@ export const FrameRenderer: Component<{ file: File | undefined }> = (props) => {
   return (
     <Show when={frames().length > 0}>
       <div>duration: {duration()}</div>
-      {frames().map((url) => (
-        <img id="ItemPreview" style={{ width: '300px' }} src={url} />
-      ))}
+      <div class={styles.FramesContainer}>
+        {frames().map((url) => (
+          <img class={styles.Frame} src={url} />
+        ))}
+      </div>
     </Show>
   )
 }
