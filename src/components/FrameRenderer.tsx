@@ -1,46 +1,66 @@
 import { Component, Show, createEffect, createSignal } from 'solid-js'
-import { getDurationSeconds, getFrames } from '../utils/video'
+import { VideoMetadata, renderFrames } from '../utils/video'
 import styles from './FrameRenderer.module.css'
 
-const GRID_WIDTH = 5
-const GRID_HEIGHT = 5
 const TRIM_START_SECONDS = 5
 const TRIM_END_SECONDS = 5
 
-export const FrameRenderer: Component<{ file: File | undefined }> = (props) => {
+const PLACEHOLDER_COLORS = ['#4949bd', '#5a5abe', '#6d6dc9']
+
+type Props = { file?: File; rows: number; columns: number; metadata?: VideoMetadata }
+
+export const FrameRenderer: Component<Props> = (props) => {
   const [frames, setFrames] = createSignal<string[]>([]) // image urls
-  const [duration, setDuration] = createSignal<number>()
-  const frameCount = GRID_WIDTH * GRID_HEIGHT
+  const frameCount = () => props.rows * props.columns
 
   createEffect(() => {
-    if (props.file) {
+    if (props.file && frames.length != props.columns * props.rows) {
       setFrames([])
 
-      getDurationSeconds(props.file).then((seconds) => {
-        setDuration(seconds)
+      const segmentLength =
+        (props.metadata!.duration - TRIM_START_SECONDS - TRIM_END_SECONDS) / (frameCount() - 1)
 
-        const segmentLength = (seconds - TRIM_START_SECONDS - TRIM_END_SECONDS) / (frameCount - 1)
+      const frameTimestamps = Array.from(
+        { length: frameCount() },
+        (v, k) => TRIM_START_SECONDS + segmentLength * k
+      )
 
-        const frameTimestamps = Array.from(
-          { length: frameCount },
-          (v, k) => TRIM_START_SECONDS + segmentLength * k
-        )
-
-        getFrames(props.file!, frameTimestamps).then((f) => setFrames(f))
+      renderFrames(props.file!, frameTimestamps, (f) => {
+        setFrames([...frames(), f])
       })
     }
   })
 
-  const width = `${100 / GRID_WIDTH}%`
+  const width = () => `${100 / props.columns}%`
 
   return (
-    <Show when={frames().length > 0}>
-      <div>duration: {duration()}</div>
+    <>
       <div class={styles.FramesContainer}>
-        {frames().map((url) => (
-          <img class={styles.Frame} style={{ width }} src={url} />
-        ))}
+        {Array.from({ length: frameCount() }).map((_, i) => {
+          return (
+            <>
+              <Show when={frames().length > i}>
+                <img class={styles.Frame} style={{ width: width() }} src={frames()[i]} />
+              </Show>
+              <Show when={props.metadata && frames().length <= i}>
+                <div
+                  class={styles.FramePlaceholder}
+                  style={{
+                    width: width(),
+                    'aspect-ratio': props.metadata!.videoWidth / props.metadata!.videoHeight,
+                    'background-color':
+                      PLACEHOLDER_COLORS[
+                        ((i % props.columns) +
+                          (Math.floor(i / props.rows) % PLACEHOLDER_COLORS.length)) %
+                          PLACEHOLDER_COLORS.length
+                      ],
+                  }}
+                />
+              </Show>
+            </>
+          )
+        })}
       </div>
-    </Show>
+    </>
   )
 }

@@ -1,6 +1,8 @@
-import type { Component } from 'solid-js'
+import type { Component, JSX } from 'solid-js'
 
-const DropZone: Component<{ fileHandler: (file: File) => void }> = (props) => {
+type Props = { fileHandler: (file: File) => void; children?: JSX.Element }
+
+const DropZone: Component<Props> = (props) => {
   return (
     <div
       style={{
@@ -15,14 +17,23 @@ const DropZone: Component<{ fileHandler: (file: File) => void }> = (props) => {
       ondrop={(e) => {
         e.preventDefault()
         const file = e.dataTransfer!.files[0]
-        props.fileHandler(file)
+        if (file.name.endsWith('.mkv')) {
+          // TODO use ffmpeg worker
+          alert('mkv is not supported')
+        } else if (file.name.endsWith('.mp4')) {
+          props.fileHandler(file)
+        } else {
+          alert('Only MP4 and mkv files are supported!')
+        }
         // var reader = new FileReader()
         // reader.onload = () => props.bufferHandler(reader.result as ArrayBuffer)
         // reader.readAsArrayBuffer(file)
         // console.log(data)
         // e.target.appendChild(document.getElementById(data))
       }}
-    ></div>
+    >
+      {props.children}
+    </div>
   )
 }
 

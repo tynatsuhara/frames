@@ -7,3 +7,7 @@
   width: 200px;
   vertical-align: text-bottom;
 }
+
+.FramePlaceholder {
+  display: inline-block;
+}
