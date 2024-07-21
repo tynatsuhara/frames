@@ -14,7 +14,7 @@ export const FrameRenderer: Component<Props> = (props) => {
   const frameCount = () => props.rows * props.columns
 
   createEffect(() => {
-    if (props.file && frames.length != props.columns * props.rows) {
+    if (props.file) {
       setFrames([])
 
       const segmentLength =
@@ -47,7 +47,7 @@ export const FrameRenderer: Component<Props> = (props) => {
                   class={styles.FramePlaceholder}
                   style={{
                     width: width(),
-                    'aspect-ratio': props.metadata!.videoWidth / props.metadata!.videoHeight,
+                    'aspect-ratio': `${props.metadata!.videoWidth} / ${props.metadata!.videoHeight}`,
                     'background-color':
                       PLACEHOLDER_COLORS[
                         ((i % props.columns) +

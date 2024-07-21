@@ -8,11 +8,11 @@ import { FrameRenderer } from './FrameRenderer'
 const App: Component = () => {
   const [file, setFile] = createSignal<File>()
   const [render, setRender] = createSignal<boolean>(false)
-  const [metadata, setMetadata] = createSignal<VideoMetadata | null>(null)
+  const [metadata, setMetadata] = createSignal<VideoMetadata | undefined>()
 
   // adjustable params
-  const [rows, setRows] = createSignal(10)
-  const [columns, setColumns] = createSignal(20)
+  const [rows, setRows] = createSignal(5)
+  const [columns, setColumns] = createSignal(10)
 
   return (
     <div class={styles.App}>
@@ -21,7 +21,7 @@ const App: Component = () => {
           console.log(f)
           setFile(f)
           setRender(false)
-          setMetadata(null)
+          setMetadata(undefined)
           getVideoMetadata(f).then((metadata) => setMetadata(metadata))
         }}
       >
