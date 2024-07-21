@@ -14,6 +14,7 @@ const App: Component = () => {
   // adjustable params
   const [rows, setRows] = createSignal(5)
   const [columns, setColumns] = createSignal(10)
+  const [renderScale, setRenderScale] = createSignal(0.25)
 
   return (
     <div class={styles.App}>
@@ -37,6 +38,7 @@ const App: Component = () => {
         rows={rows()}
         columns={columns()}
         metadata={metadata()}
+        renderScale={renderScale()}
       />
     </div>
   )

@@ -7,7 +7,13 @@ const TRIM_END_SECONDS = 5
 
 const PLACEHOLDER_COLORS = ['#4949bd', '#5a5abe', '#6d6dc9']
 
-type Props = { file?: File; rows: number; columns: number; metadata?: VideoMetadata }
+type Props = {
+  file?: File
+  rows: number
+  columns: number
+  renderScale: number
+  metadata?: VideoMetadata
+}
 
 export const FrameRenderer: Component<Props> = (props) => {
   const [frames, setFrames] = createSignal<string[]>([]) // image urls
@@ -25,7 +31,7 @@ export const FrameRenderer: Component<Props> = (props) => {
         (v, k) => TRIM_START_SECONDS + segmentLength * k
       )
 
-      renderFrames(props.file!, frameTimestamps, (f) => {
+      renderFrames(props.file!, frameTimestamps, props.renderScale, (f) => {
         setFrames([...frames(), f])
       })
     }

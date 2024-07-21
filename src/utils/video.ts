@@ -23,7 +23,12 @@ export const getVideoMetadata = (file: File): Promise<VideoMetadata> => {
   })
 }
 
-export const renderFrames = (file: File, timestamps: number[], callback: (f: string) => void) => {
+export const renderFrames = (
+  file: File,
+  timestamps: number[],
+  renderScale: number,
+  callback: (f: string) => void
+) => {
   const startTime = new Date().getTime()
 
   const player = document.createElement('video')
@@ -36,8 +41,8 @@ export const renderFrames = (file: File, timestamps: number[], callback: (f: str
   const canvas = document.createElement('canvas')
   const ctx = canvas.getContext('2d')!
   player.onloadedmetadata = () => {
-    canvas.width = player.videoWidth
-    canvas.height = player.videoHeight
+    canvas.width = player.videoWidth * renderScale
+    canvas.height = player.videoHeight * renderScale
   }
 
   const queueNextFrame = () => {
@@ -49,7 +54,17 @@ export const renderFrames = (file: File, timestamps: number[], callback: (f: str
 
     setTimeout(() => {
       player.onseeked = () => {
-        ctx.drawImage(player, 0, 0, canvas.width, canvas.height)
+        ctx.drawImage(
+          player,
+          0,
+          0,
+          player.videoWidth,
+          player.videoHeight,
+          0,
+          0,
+          canvas.width,
+          canvas.height
+        )
         callback(ctx.canvas.toDataURL())
         frame++
         queueNextFrame()
