@@ -19,6 +19,7 @@
     "vite-plugin-solid": "^2.8.2"
   },
   "dependencies": {
+    "html2canvas": "^1.4.1",
     "solid-js": "^1.8.18"
   }
 }

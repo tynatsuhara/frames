@@ -1,5 +1,6 @@
 import { createSignal, type Component } from 'solid-js'
 
+import { download } from '../utils/download'
 import { VideoMetadata, getVideoMetadata } from '../utils/video'
 import styles from './App.module.css'
 import DropZone from './DropZone'
@@ -28,6 +29,8 @@ const App: Component = () => {
         <div>Drop movie file here.</div>
         {metadata() ? <div>Duration: {metadata()!.duration}</div> : <></>}
         <button onclick={() => setRender(true)}>render</button>
+        <div>For printing, suggested scale is 300 * inches wide.</div>
+        {file() ? <button onclick={() => download()}>download</button> : <></>}
       </DropZone>
       <FrameRenderer
         file={render() ? file() : undefined}

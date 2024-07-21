@@ -35,7 +35,7 @@ export const FrameRenderer: Component<Props> = (props) => {
 
   return (
     <>
-      <div class={styles.FramesContainer}>
+      <div class={styles.FramesContainer} id="frames">
         {Array.from({ length: frameCount() }).map((_, i) => {
           return (
             <>
