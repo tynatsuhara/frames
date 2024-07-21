@@ -43,6 +43,9 @@ export const FrameRenderer: Component<Props> = (props) => {
     <>
       <div class={styles.FramesContainer} id="frames">
         {Array.from({ length: frameCount() }).map((_, i) => {
+          const rowStartColor = Math.floor(i / props.columns) % PLACEHOLDER_COLORS.length
+          const placeholder = ((i % props.columns) + rowStartColor) % PLACEHOLDER_COLORS.length
+
           return (
             <>
               <Show when={frames().length > i}>
@@ -54,12 +57,7 @@ export const FrameRenderer: Component<Props> = (props) => {
                   style={{
                     width: width(),
                     'aspect-ratio': `${props.metadata!.videoWidth} / ${props.metadata!.videoHeight}`,
-                    'background-color':
-                      PLACEHOLDER_COLORS[
-                        ((i % props.columns) +
-                          (Math.floor(i / props.rows) % PLACEHOLDER_COLORS.length)) %
-                          PLACEHOLDER_COLORS.length
-                      ],
+                    'background-color': PLACEHOLDER_COLORS[placeholder],
                   }}
                 />
               </Show>
