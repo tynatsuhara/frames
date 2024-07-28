@@ -68,7 +68,9 @@ const App: Component = () => {
               Output dimensions will be {finalWidth()} x {finalHeight()} px
             </div>
             <div>
-              <button onclick={() => setRender(true)}>render</button>
+              <button style={{ 'margin-right': '.5rem' }} onclick={() => setRender(true)}>
+                render
+              </button>
               {file() ? <button onclick={() => download(finalWidth())}>download</button> : <></>}
             </div>
           </div>

@@ -40,10 +40,6 @@ export const renderFrames = (
 
   const canvas = document.createElement('canvas')
   const ctx = canvas.getContext('2d')!
-  player.onloadedmetadata = () => {
-    canvas.width = player.videoWidth * renderScale
-    canvas.height = player.videoHeight * renderScale
-  }
 
   const queueNextFrame = () => {
     if (frame === timestamps.length) {
@@ -79,5 +75,9 @@ export const renderFrames = (
     })
   }
 
-  queueNextFrame()
+  player.onloadedmetadata = () => {
+    canvas.width = player.videoWidth * renderScale
+    canvas.height = player.videoHeight * renderScale
+    queueNextFrame()
+  }
 }
