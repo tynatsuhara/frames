@@ -19,8 +19,8 @@ const App: Component = () => {
   const [trimStart, setTrimStart] = createSignal(0)
   const [trimEnd, setTrimEnd] = createSignal(0)
 
-  const finalWidth = () => metadata()!.videoWidth * renderScale() * columns()
-  const finalHeight = () => metadata()!.videoHeight * renderScale() * rows()
+  const finalWidth = () => Math.floor(metadata()!.videoWidth * renderScale() * columns())
+  const finalHeight = () => Math.floor(metadata()!.videoHeight * renderScale() * rows())
 
   return (
     <div class={styles.App}>
