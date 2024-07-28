@@ -1,16 +1,12 @@
 import type { Component, JSX } from 'solid-js'
+import styles from './DropZone.module.css'
 
 type Props = { fileHandler: (file: File) => void; children?: JSX.Element }
 
 const DropZone: Component<Props> = (props) => {
   return (
     <div
-      style={{
-        // width: '200px',
-        // height: '200px',
-        padding: '10px',
-        'background-color': 'cornflowerblue',
-      }}
+      class={styles.DropZone}
       ondragover={(e) => {
         e.preventDefault()
         e.dataTransfer!.dropEffect = 'move'

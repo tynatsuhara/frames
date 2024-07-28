@@ -35,12 +35,12 @@ const App: Component = () => {
       >
         <h1>🄵🅁🄰🄼🄴🅂</h1>
         {metadata() ? (
-          <div>
+          <div class={styles.InputContainer}>
             <div>
-              <strong>File name:</strong> {file()?.name}
+              <strong>file name</strong> {file()?.name}
             </div>
             <div>
-              <strong>Duration:</strong> {Math.floor(metadata()!.duration)} seconds
+              <strong>duration</strong> {Math.floor(metadata()!.duration)} seconds
             </div>
             <NumberInput label="rows" onChange={setRows} value={rows()} min={0} />
             <NumberInput label="columns" onChange={setColumns} value={columns()} min={0} />
@@ -67,11 +67,13 @@ const App: Component = () => {
             <div>
               Output dimensions will be {finalWidth()} x {finalHeight()} px
             </div>
-            <button onclick={() => setRender(true)}>render</button>
-            {file() ? <button onclick={() => download(finalWidth())}>download</button> : <></>}
+            <div>
+              <button onclick={() => setRender(true)}>render</button>
+              {file() ? <button onclick={() => download(finalWidth())}>download</button> : <></>}
+            </div>
           </div>
         ) : (
-          <div>Drop movie file here.</div>
+          <div>drop movie file here</div>
         )}
       </DropZone>
       <FrameRenderer

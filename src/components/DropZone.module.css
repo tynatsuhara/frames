@@ -1,0 +1,8 @@
+.DropZone {
+  padding: 1rem;
+  /* background-color: cornflowerblue; */
+  margin: 2rem;
+  border-radius: 2rem;
+  border: 0.25rem dotted cornflowerblue;
+  transition: all 2s ease;
+}
