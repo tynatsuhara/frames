@@ -55,55 +55,55 @@ export const FrameRenderer: Component<Props> = (props) => {
 
   const width = () => `${100 / props.columns}%`
 
-  const padding = () => <></>
-
   return (
-    <Show when={props.metadata} keyed>
-      <div class={styles.FramesContainer} id="frames">
-        <For each={Array.from({ length: props.rows })}>
-          {(_, i) => {
-            // this doesn't work right now because the scaling
-            // TODO: just add a row spacer div and scale it with aspect-ratio
-            const margin = props.rowPadding * props.metadata!.videoHeight
+    <Show when={props.metadata}>
+      <div class={styles.FramesContainerContainer}>
+        <div class={styles.FramesContainer} id="frames">
+          <For each={Array.from({ length: props.rows })}>
+            {(_, i) => {
+              // this doesn't work right now because the scaling
+              // TODO: just add a row spacer div and scale it with aspect-ratio
+              const margin = props.rowPadding * props.metadata!.videoHeight
 
-            return (
-              <div class="frame-row" style={{ margin: `${margin}px 0` }}>
-                <For each={Array.from({ length: props.columns })}>
-                  {(_, j) => {
-                    const rowStartColor = i() % PLACEHOLDER_COLORS.length
-                    const placeholder = (j() + rowStartColor) % PLACEHOLDER_COLORS.length
-                    const f = i() * props.columns + j()
-                    const id = `frame-${f}`
+              return (
+                <div class="frame-row" style={{ margin: `${margin}px 0` }}>
+                  <For each={Array.from({ length: props.columns })}>
+                    {(_, j) => {
+                      const rowStartColor = i() % PLACEHOLDER_COLORS.length
+                      const placeholder = (j() + rowStartColor) % PLACEHOLDER_COLORS.length
+                      const f = i() * props.columns + j()
+                      const id = `frame-${f}`
 
-                    return (
-                      <>
-                        <Show when={frames()[f]}>
-                          <img
-                            id={id}
-                            class={styles.Frame}
-                            style={{ width: width() }}
-                            src={frames()[f]}
-                          />
-                        </Show>
-                        <Show when={!frames()[f]}>
-                          <div
-                            id={id}
-                            class={styles.FramePlaceholder}
-                            style={{
-                              width: width(),
-                              'aspect-ratio': `${props.metadata!.videoWidth} / ${props.metadata!.videoHeight}`,
-                              'background-color': PLACEHOLDER_COLORS[placeholder],
-                            }}
-                          />
-                        </Show>
-                      </>
-                    )
-                  }}
-                </For>
-              </div>
-            )
-          }}
-        </For>
+                      return (
+                        <>
+                          <Show when={frames()[f]}>
+                            <img
+                              id={id}
+                              class={styles.Frame}
+                              style={{ width: width() }}
+                              src={frames()[f]}
+                            />
+                          </Show>
+                          <Show when={!frames()[f]}>
+                            <div
+                              id={id}
+                              class={styles.FramePlaceholder}
+                              style={{
+                                width: width(),
+                                'aspect-ratio': `${props.metadata!.videoWidth} / ${props.metadata!.videoHeight}`,
+                                'background-color': PLACEHOLDER_COLORS[placeholder],
+                              }}
+                            />
+                          </Show>
+                        </>
+                      )
+                    }}
+                  </For>
+                </div>
+              )
+            }}
+          </For>
+        </div>
       </div>
     </Show>
   )

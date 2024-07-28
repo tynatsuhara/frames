@@ -3,9 +3,13 @@ h1 {
   margin-bottom: 0.5rem;
 }
 
+.FramesContainerContainer {
+  margin: 2rem;
+  border: 0.125rem solid cornflowerblue;
+}
+
 .FramesContainer {
   text-align: center;
-  margin: 2rem;
 }
 
 .Frame {
