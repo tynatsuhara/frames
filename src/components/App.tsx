@@ -1,7 +1,7 @@
-import { createSignal, type Component } from 'solid-js'
+import { createSignal, Show, type Component } from 'solid-js'
 
 import { download } from '../utils/download'
-import { VideoMetadata, getVideoMetadata } from '../utils/video'
+import { getVideoMetadata, VideoMetadata } from '../utils/video'
 import styles from './App.module.css'
 import { ColorInput } from './ColorInput'
 import DropZone from './DropZone'
@@ -12,6 +12,13 @@ const App: Component = () => {
   const [file, setFile] = createSignal<File>()
   const [render, setRender] = createSignal<boolean>(false)
   const [metadata, setMetadata] = createSignal<VideoMetadata | undefined>()
+
+  const withResetRender = <T,>(fn: (t: T) => void): ((t: T) => void) => {
+    return (t) => {
+      setRender(false)
+      fn(t)
+    }
+  }
 
   // todo adjustable params
   const [rows, setRows] = createSignal(5)
@@ -37,7 +44,7 @@ const App: Component = () => {
         }}
       >
         <h1>🄵🅁🄰🄼🄴🅂</h1>
-        {metadata() ? (
+        <Show when={metadata()}>
           <div class={styles.InputContainer}>
             <div>
               <strong>file name</strong> {file()?.name}
@@ -45,11 +52,16 @@ const App: Component = () => {
             <div>
               <strong>duration</strong> {Math.floor(metadata()!.duration)} seconds
             </div>
-            <NumberInput label="rows" onChange={setRows} value={rows()} min={0} />
-            <NumberInput label="columns" onChange={setColumns} value={columns()} min={0} />
+            <NumberInput label="rows" onChange={withResetRender(setRows)} value={rows()} min={0} />
+            <NumberInput
+              label="columns"
+              onChange={withResetRender(setColumns)}
+              value={columns()}
+              min={0}
+            />
             <NumberInput
               label="render scale"
-              onChange={setRenderScale}
+              onChange={withResetRender(setRenderScale)}
               value={renderScale()}
               min={0.01}
               max={1}
@@ -57,13 +69,13 @@ const App: Component = () => {
             />
             <NumberInput
               label="trim start (seconds)"
-              onChange={setTrimStart}
+              onChange={withResetRender(setTrimStart)}
               value={trimStart()}
               min={0}
             />
             <NumberInput
               label="trim end (seconds)"
-              onChange={setTrimEnd}
+              onChange={withResetRender(setTrimEnd)}
               value={trimEnd()}
               min={0}
             />
@@ -83,15 +95,19 @@ const App: Component = () => {
               <button style={{ 'margin-right': '.5rem' }} onclick={() => setRender(true)}>
                 render
               </button>
-              {file() ? <button onclick={() => download(finalWidth())}>download</button> : <></>}
+              <Show when={file()}>
+                <button onclick={() => download(finalWidth())}>download</button>
+              </Show>
             </div>
           </div>
-        ) : (
+        </Show>
+        <Show when={!metadata()}>
           <div>drop movie file here</div>
-        )}
+        </Show>
       </DropZone>
       <FrameRenderer
-        file={render() ? file() : undefined}
+        file={file()}
+        render={render()}
         rows={rows()}
         columns={columns()}
         metadata={metadata()}
@@ -99,6 +115,7 @@ const App: Component = () => {
         trimStart={trimStart()}
         trimEnd={trimEnd()}
         rowPadding={rowPadding()}
+        paddingColor={paddingColor()}
       />
     </div>
   )
