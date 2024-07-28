@@ -27,7 +27,8 @@ export const renderFrames = (
   file: File,
   timestamps: number[],
   renderScale: number,
-  callback: (f: string) => void
+  renderId: number,
+  callback: (f: string, frameId: number, renderId: number) => void
 ) => {
   const startTime = new Date().getTime()
 
@@ -61,7 +62,7 @@ export const renderFrames = (
           canvas.width,
           canvas.height
         )
-        callback(ctx.canvas.toDataURL())
+        callback(ctx.canvas.toDataURL(), frame, renderId)
         frame++
         queueNextFrame()
       }

@@ -10,12 +10,14 @@ import { NumberInput } from './NumberInput'
 
 const App: Component = () => {
   const [file, setFile] = createSignal<File>()
-  const [render, setRender] = createSignal<boolean>(false)
+  const [render, setRender] = createSignal(false)
+  const [renderId, setRenderId] = createSignal(1)
   const [metadata, setMetadata] = createSignal<VideoMetadata | undefined>()
 
   const withResetRender = <T,>(fn: (t: T) => void): ((t: T) => void) => {
     return (t) => {
       setRender(false)
+      setRenderId(renderId() + 1)
       fn(t)
     }
   }
@@ -108,6 +110,7 @@ const App: Component = () => {
       <FrameRenderer
         file={file()}
         render={render()}
+        renderId={renderId()}
         rows={rows()}
         columns={columns()}
         metadata={metadata()}
