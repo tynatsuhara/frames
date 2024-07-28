@@ -2,17 +2,16 @@ import { Component, Show, createEffect, createSignal } from 'solid-js'
 import { VideoMetadata, renderFrames } from '../utils/video'
 import styles from './FrameRenderer.module.css'
 
-const TRIM_START_SECONDS = 5
-const TRIM_END_SECONDS = 5
-
 const PLACEHOLDER_COLORS = ['#4949bd', '#5a5abe', '#6d6dc9']
 
 type Props = {
   file?: File
+  metadata?: VideoMetadata
   rows: number
   columns: number
   renderScale: number
-  metadata?: VideoMetadata
+  trimStart: number
+  trimEnd: number
 }
 
 export const FrameRenderer: Component<Props> = (props) => {
@@ -24,11 +23,11 @@ export const FrameRenderer: Component<Props> = (props) => {
       setFrames([])
 
       const segmentLength =
-        (props.metadata!.duration - TRIM_START_SECONDS - TRIM_END_SECONDS) / (frameCount() - 1)
+        (props.metadata!.duration - props.trimStart - props.trimEnd) / (frameCount() - 1)
 
       const frameTimestamps = Array.from(
         { length: frameCount() },
-        (v, k) => TRIM_START_SECONDS + segmentLength * k
+        (v, k) => props.trimStart + segmentLength * k
       )
 
       renderFrames(props.file!, frameTimestamps, props.renderScale, (f) => {

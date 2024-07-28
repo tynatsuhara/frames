@@ -6,9 +6,10 @@ const DropZone: Component<Props> = (props) => {
   return (
     <div
       style={{
-        width: '200px',
-        height: '200px',
-        'background-color': 'red',
+        // width: '200px',
+        // height: '200px',
+        padding: '10px',
+        'background-color': 'cornflowerblue',
       }}
       ondragover={(e) => {
         e.preventDefault()

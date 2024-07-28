@@ -20,10 +20,8 @@ const saveAs = (uri: string, filename: string) => {
   }
 }
 
-export const download = async () => {
+export const download = async (width: number) => {
   const frames: HTMLElement = document.querySelector('#frames')!
-  // todo make adjustable
-  const width = 36 * 300 // inches wide * dpi
   const scale = width / frames.clientWidth
   const canvas = await html2canvas(frames, { scale })
   saveAs(canvas.toDataURL(), `frames-${new Date().getTime()}.png`)
