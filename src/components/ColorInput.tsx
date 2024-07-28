@@ -3,23 +3,20 @@ import styles from './Inputs.module.css'
 
 type Props = {
   label: string
-  value: number
-  onChange: (n: number) => void
-  min?: number
-  max?: number
-  step?: number
+  value: string
+  onChange: (n: string) => void
 }
 
-export const NumberInput: Component<Props> = (props) => {
+export const ColorInput: Component<Props> = (props) => {
   return (
     <div class={styles.NumberInput}>
       <span class={styles.NumberInputLabel}>
         <strong>{props.label}</strong>
       </span>
       <input
-        type="number"
+        type="color"
         {...props}
-        onChange={(e) => props.onChange(Number.parseFloat(e.currentTarget.value))}
+        onChange={(e) => props.onChange(e.currentTarget.value)}
       ></input>
     </div>
   )

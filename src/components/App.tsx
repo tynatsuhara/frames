@@ -3,6 +3,7 @@ import { createSignal, type Component } from 'solid-js'
 import { download } from '../utils/download'
 import { VideoMetadata, getVideoMetadata } from '../utils/video'
 import styles from './App.module.css'
+import { ColorInput } from './ColorInput'
 import DropZone from './DropZone'
 import { FrameRenderer } from './FrameRenderer'
 import { NumberInput } from './NumberInput'
@@ -18,6 +19,8 @@ const App: Component = () => {
   const [renderScale, setRenderScale] = createSignal(0.25)
   const [trimStart, setTrimStart] = createSignal(0)
   const [trimEnd, setTrimEnd] = createSignal(0)
+  const [rowPadding, setRowPadding] = createSignal(0)
+  const [paddingColor, setPaddingColor] = createSignal('#ffffff')
 
   const finalWidth = () => Math.floor(metadata()!.videoWidth * renderScale() * columns())
   const finalHeight = () => Math.floor(metadata()!.videoHeight * renderScale() * rows())
@@ -64,6 +67,15 @@ const App: Component = () => {
               value={trimEnd()}
               min={0}
             />
+            <NumberInput
+              label="row padding (%)"
+              onChange={setRowPadding}
+              value={rowPadding()}
+              min={0}
+              max={1}
+              step={0.01}
+            />
+            <ColorInput label="padding color" onChange={setPaddingColor} value={paddingColor()} />
             <div>
               Output dimensions will be {finalWidth()} x {finalHeight()} px
             </div>
@@ -86,6 +98,7 @@ const App: Component = () => {
         renderScale={renderScale()}
         trimStart={trimStart()}
         trimEnd={trimEnd()}
+        rowPadding={rowPadding()}
       />
     </div>
   )
