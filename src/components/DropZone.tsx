@@ -14,13 +14,10 @@ const DropZone: Component<Props> = (props) => {
       ondrop={(e) => {
         e.preventDefault()
         const file = e.dataTransfer!.files[0]
-        if (file.name.endsWith('.mkv')) {
-          // TODO use ffmpeg worker
-          alert('mkv is not supported')
-        } else if (file.name.endsWith('.mp4')) {
+        if (file.name.endsWith('.mp4') || file.name.endsWith('.mkv')) {
           props.fileHandler(file)
         } else {
-          alert('Only MP4 and mkv files are supported!')
+          alert('Only mp4 and mkv files are supported!')
         }
         // var reader = new FileReader()
         // reader.onload = () => props.bufferHandler(reader.result as ArrayBuffer)

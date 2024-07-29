@@ -34,6 +34,7 @@ export const renderFrames = (
   const startTime = new Date().getTime()
 
   const player = document.createElement('video')
+  player.setAttribute('muted', 'true')
   player.setAttribute('src', URL.createObjectURL(file))
   player.load()
   player.onerror = () => alert('failed to process video')
@@ -68,12 +69,7 @@ export const renderFrames = (
         queueNextFrame()
       }
 
-      const ts = timestamps[frame]
-      // try {
-      player.currentTime = ts
-      // } catch (e) {
-      // for some reason, this errors on the last frame, but also seems to work fine
-      // }
+      player.currentTime = timestamps[frame]
     })
   }
 

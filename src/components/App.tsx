@@ -93,16 +93,18 @@ const App: Component = () => {
             />
             <ColorInput label="padding color" onChange={setPaddingColor} value={paddingColor()} />
             <div>
-              Output dimensions will be {finalWidth()} x {finalHeight()} px
+              <strong>output dimensions</strong>&nbsp;
+              {finalWidth()} x {finalHeight()} px
             </div>
-            <div>
+            <div style={{ margin: '1rem' }}>
               <button style={{ 'margin-right': '.5rem' }} onclick={() => setRender(true)}>
-                render
+                RENDER
               </button>
               <Show when={file()}>
-                <button onclick={() => download(finalWidth())}>download</button>
+                <button onclick={() => download(finalWidth())}>DOWNLOAD</button>
               </Show>
             </div>
+            <div>If you encounter visual artifacts, try turning off hardware acceleration!</div>
           </div>
         </Show>
         <Show when={!metadata()}>

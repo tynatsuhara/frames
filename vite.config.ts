@@ -1,13 +1,7 @@
-import { readFileSync } from 'fs'
 import { defineConfig } from 'vite'
 import solidPlugin from 'vite-plugin-solid'
-// import devtools from 'solid-devtools/vite';
 
 export default () => {
-  const ffmpegScript = readFileSync('node_modules/ffmpeg.js/ffmpeg-worker-mp4.js', 'utf8')
-
-  process.env = { ...process.env, VITE_FFMPEG_SCRIPT: ffmpegScript }
-
   return defineConfig({
     plugins: [
       /* 
