@@ -1,9 +1,14 @@
 .NumberInput > input {
   width: 5rem;
+  background-color: #e7e6dc;
 }
 
 .NumberInputLabel {
   display: inline-block;
   text-align: right;
   margin-right: 10px;
+}
+
+button {
+  background-color: #e7e6dc;
 }
