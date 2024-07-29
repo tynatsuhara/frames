@@ -49,76 +49,86 @@ const App: Component = () => {
         }}
       >
         <h1>🄵🅁🄰🄼🄴🅂</h1>
-        <Show when={metadata()}>
-          <div class={styles.InputContainer}>
-            <div>
-              <strong>file name</strong> {file()?.name}
-            </div>
-            <div>
-              <strong>duration</strong> {Math.floor(metadata()!.duration)} seconds
-            </div>
-            <NumberInput label="rows" onChange={withResetRender(setRows)} value={rows()} min={0} />
-            <NumberInput
-              label="columns"
-              onChange={withResetRender(setColumns)}
-              value={columns()}
-              min={0}
-            />
-            <NumberInput
-              label="render scale"
-              onChange={withResetRender(setRenderScale)}
-              value={renderScale()}
-              min={0.01}
-              max={1}
-              step={0.01}
-            />
-            <NumberInput
-              label="trim start (seconds)"
-              onChange={withResetRender(setTrimStart)}
-              value={trimStart()}
-              min={0}
-            />
-            <NumberInput
-              label="trim end (seconds)"
-              onChange={withResetRender(setTrimEnd)}
-              value={trimEnd()}
-              min={0}
-            />
-            <NumberInput
-              label="row padding (%)"
-              onChange={setRowPadding}
-              value={rowPadding()}
-              min={0}
-              max={1}
-              step={0.01}
-            />
-            <ColorInput label="padding color" onChange={setPaddingColor} value={paddingColor()} />
-            <div>
-              <strong>output dimensions</strong>&nbsp;
-              {finalWidth()} x {finalHeight()} px
-            </div>
-            <div style={{ margin: '1rem' }}>
-              <button
-                style={{ 'margin-right': '.5rem' }}
-                onclick={() => {
-                  setRender(true)
-                  setRendering(true)
-                }}
-              >
-                RENDER
-              </button>
-              <Show when={file()}>
-                <button disabled={!render() || rendering()} onclick={() => download(finalWidth())}>
-                  DOWNLOAD
+        <div class={styles.TextContent}>
+          <Show when={metadata()}>
+            <div class={styles.InputContainer}>
+              <div>
+                <strong>file name</strong> {file()?.name}
+              </div>
+              <div>
+                <strong>duration</strong> {Math.floor(metadata()!.duration)} seconds
+              </div>
+              <NumberInput
+                label="rows"
+                onChange={withResetRender(setRows)}
+                value={rows()}
+                min={0}
+              />
+              <NumberInput
+                label="columns"
+                onChange={withResetRender(setColumns)}
+                value={columns()}
+                min={0}
+              />
+              <NumberInput
+                label="render scale"
+                onChange={withResetRender(setRenderScale)}
+                value={renderScale()}
+                min={0.01}
+                max={1}
+                step={0.01}
+              />
+              <NumberInput
+                label="trim start (seconds)"
+                onChange={withResetRender(setTrimStart)}
+                value={trimStart()}
+                min={0}
+              />
+              <NumberInput
+                label="trim end (seconds)"
+                onChange={withResetRender(setTrimEnd)}
+                value={trimEnd()}
+                min={0}
+              />
+              <NumberInput
+                label="row padding (%)"
+                onChange={setRowPadding}
+                value={rowPadding()}
+                min={0}
+                max={1}
+                step={0.01}
+              />
+              <ColorInput label="padding color" onChange={setPaddingColor} value={paddingColor()} />
+              <div>
+                <strong>output dimensions</strong>&nbsp;
+                {finalWidth()} x {finalHeight()} px
+              </div>
+              <div style={{ margin: '1rem' }}>
+                <button
+                  style={{ 'margin-right': '1rem' }}
+                  onclick={() => {
+                    setRender(true)
+                    setRendering(true)
+                  }}
+                >
+                  render
                 </button>
-              </Show>
+                <Show when={file()}>
+                  <button
+                    disabled={!render() || rendering()}
+                    onclick={() => download(finalWidth())}
+                  >
+                    download
+                  </button>
+                </Show>
+              </div>
+              <div>If you encounter visual artifacts, try turning off hardware acceleration!</div>
             </div>
-            <div>If you encounter visual artifacts, try turning off hardware acceleration!</div>
-          </div>
-        </Show>
-        <Show when={!metadata()}>
-          <div>Drop movie file here!</div>
-        </Show>
+          </Show>
+          <Show when={!metadata()}>
+            <div>Drop movie file here!</div>
+          </Show>
+        </div>
       </DropZone>
       <FrameRenderer
         file={file()}
