@@ -22,7 +22,6 @@ const App: Component = () => {
     }
   }
 
-  // todo adjustable params
   const [rows, setRows] = createSignal(5)
   const [columns, setColumns] = createSignal(10)
   const [renderScale, setRenderScale] = createSignal(0.25)
@@ -32,7 +31,10 @@ const App: Component = () => {
   const [paddingColor, setPaddingColor] = createSignal('#ffffff')
 
   const finalWidth = () => Math.floor(metadata()!.videoWidth * renderScale() * columns())
-  const finalHeight = () => Math.floor(metadata()!.videoHeight * renderScale() * rows())
+  const finalHeight = () => {
+    const paddingHeight = (rows() + 1) * metadata()!.videoHeight * rowPadding()
+    return Math.floor(paddingHeight + metadata()!.videoHeight * renderScale() * rows())
+  }
 
   return (
     <div class={styles.App}>
