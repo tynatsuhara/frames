@@ -16,6 +16,7 @@ type Props = {
   trimEnd: number
   rowPadding: number
   paddingColor: string
+  renderCompleteCallback: () => void
 }
 
 export const FrameRenderer: Component<Props> = (props) => {
@@ -45,6 +46,9 @@ export const FrameRenderer: Component<Props> = (props) => {
           if (renderId === props.renderId) {
             const newFrames = [...frames()]
             newFrames[frameId] = f
+            if (newFrames[newFrames.length - 1]) {
+              props.renderCompleteCallback()
+            }
             setFrames(newFrames)
           }
         }

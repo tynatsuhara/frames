@@ -11,6 +11,7 @@ import { NumberInput } from './NumberInput'
 const App: Component = () => {
   const [file, setFile] = createSignal<File>()
   const [render, setRender] = createSignal(false)
+  const [rendering, setRendering] = createSignal(false)
   const [renderId, setRenderId] = createSignal(1)
   const [metadata, setMetadata] = createSignal<VideoMetadata | undefined>()
 
@@ -97,18 +98,26 @@ const App: Component = () => {
               {finalWidth()} x {finalHeight()} px
             </div>
             <div style={{ margin: '1rem' }}>
-              <button style={{ 'margin-right': '.5rem' }} onclick={() => setRender(true)}>
+              <button
+                style={{ 'margin-right': '.5rem' }}
+                onclick={() => {
+                  setRender(true)
+                  setRendering(true)
+                }}
+              >
                 RENDER
               </button>
               <Show when={file()}>
-                <button onclick={() => download(finalWidth())}>DOWNLOAD</button>
+                <button disabled={!render() || rendering()} onclick={() => download(finalWidth())}>
+                  DOWNLOAD
+                </button>
               </Show>
             </div>
             <div>If you encounter visual artifacts, try turning off hardware acceleration!</div>
           </div>
         </Show>
         <Show when={!metadata()}>
-          <div>drop movie file here</div>
+          <div>Drop movie file here!</div>
         </Show>
       </DropZone>
       <FrameRenderer
@@ -123,6 +132,7 @@ const App: Component = () => {
         trimEnd={trimEnd()}
         rowPadding={rowPadding()}
         paddingColor={paddingColor()}
+        renderCompleteCallback={() => setRendering(false)}
       />
     </div>
   )
