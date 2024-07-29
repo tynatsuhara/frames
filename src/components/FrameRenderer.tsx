@@ -55,7 +55,7 @@ export const FrameRenderer: Component<Props> = (props) => {
   const width = () => `${100 / props.columns}%`
 
   return (
-    <Show when={props.metadata}>
+    <Show when={props.metadata && props.rows && props.columns} keyed>
       <div class={styles.FramesContainerContainer}>
         <div class={styles.FramesContainer} id="frames">
           <For each={Array.from({ length: props.rows })}>

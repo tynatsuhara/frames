@@ -30,6 +30,7 @@ export const renderFrames = (
   renderId: number,
   callback: (f: string, frameId: number, renderId: number) => void
 ) => {
+  console.log(`rendering frames (renderId=${renderId})`)
   const startTime = new Date().getTime()
 
   const player = document.createElement('video')
@@ -68,11 +69,11 @@ export const renderFrames = (
       }
 
       const ts = timestamps[frame]
-      try {
-        player.currentTime = ts
-      } catch (e) {
-        // for some reason, this errors on the last frame, but also seems to work fine
-      }
+      // try {
+      player.currentTime = ts
+      // } catch (e) {
+      // for some reason, this errors on the last frame, but also seems to work fine
+      // }
     })
   }
 
