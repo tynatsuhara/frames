@@ -48,7 +48,14 @@ const App: Component = () => {
           getVideoMetadata(f).then((metadata) => setMetadata(metadata))
         }}
       >
-        <h1>🄵🅁🄰🄼🄴🅂</h1>
+        <div class={styles.Title}>
+          <div>f</div>
+          <div>r</div>
+          <div>a</div>
+          <div>m</div>
+          <div>e</div>
+          <div>s</div>
+        </div>
         <div class={styles.TextContent}>
           <Show when={metadata()}>
             <div class={styles.InputContainer}>
